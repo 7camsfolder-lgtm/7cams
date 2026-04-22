@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>单招预估录取测试</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    background: #f2f2f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 14px;
+    background: #007AFF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .secondary {
+    background: #e5e5ea;
+    color: black;
+  }
+
+  .progress {
+    height: 4px;
+    background: #e5e5ea;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .bar {
+    height: 100%;
+    width: 0%;
+    background: #007AFF;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1 style="font-size:22px; font-weight:700; margin-bottom:5px;">
+  单招预估录取测试
+</h1>
+<p style="color:#888; font-size:13px; margin-bottom:15px;">
+  输入你的情况，预测你的未来去向
+</p>
+    <div class="progress">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <h2 id="question">点击开始测试</h2>
+    <div id="options"></div>
+    <button class="secondary" onclick="start()">开始测试</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "1.你的陕西单招文化课成绩",
+    options: ["160分以下","160-200分","201分-240分","240以上"]
+  },
+  {
+    question: "2.你平时学习状态？",
+    options: ["基本摆烂","偶尔努力","比较认真","卷王"]
+  },
+  {
+    question: "3.考试时你的感觉？",
+    options: ["不会写","随便写","还能写点","全会"]
+  },
+  {
+    question: "4.老师对你的评价？",
+    options: ["放弃治疗","一般般","还可以","重点培养"]
+  },
+  {
+    question: "5.你未来的规划？",
+    options: ["能上就行","找工作","继续读书","还没想好"]
+  },
+  {
+    question: "6.你觉得自己运气？",
+    options: ["很差","一般","不错","欧皇"]
+  }
+];
+
+let current = 0;
+
+function start() {
+  current = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[current];
+  document.getElementById("question").innerText = q.question;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach(text => {
+    const btn = document.createElement("button");
+    btn.innerText = text;
+    btn.onclick = () => select();
+    optionsDiv.appendChild(btn);
+  });
+
+  updateProgress();
+}
+
+function select() {
+  current++;
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function updateProgress() {
+  const percent = (current / questions.length) * 100;
+  document.getElementById("bar").style.width = percent + "%";
+}
+
+function showResult() {
+  document.getElementById("question").innerText = "正在分析录取结果...";
+  document.getElementById("options").innerHTML = "<p>系统计算中...</p>";
+
+  setTimeout(() => {
+
+    const resultList = [
+      "广东电子厂",
+      "福建电子厂",
+      "家里蹲大学",
+      "史莱克学院",
+      "美团大家庭",
+      "厨房掌勺速成班",
+      "快递分拣实践基地",
+      "村口小卖部专业学院"
+    ];
+
+    const result = resultList[Math.floor(Math.random() * resultList.length)];
+
+    showFinal(result);
+
+  }, 1200);
+}
+
+function showFinal(result) {
+  document.getElementById("question").innerText = "恭喜你预估录取：" + result;
+
+  document.getElementById("options").innerHTML = `
+    <p>根据你的测试结果，系统已为你匹配最佳去向</p>
+    <p>请做好入学准备 😏</p>
+    <p style="color:#aaa;">（考得好也给我上！）</p>
+  `;
+}
+</script>
+
+</body>
+</html>
